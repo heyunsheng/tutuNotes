@@ -8,11 +8,46 @@
 
 import Cocoa
 
+enum NoteFilesNames:String {
+    
+    
+    case TextFile = "text.rtf" //文本文件名
+    
+    case AttachmentsDirectory = "Attachments" //附件文件名
+}
+
+enum ErrorCode : Int {
+    
+    /// 无法找到文档
+    case CannotFondDocument
+    /// 无法访问文档中的任何文件
+    case CannotLoadFileWrapper;
+    /// 无法加载 text.rtf 文件
+    case CannotLoadText
+    /// 无法访问 Attachments 文件夹
+    case CannotAccessAttachments
+    /// 无法保存 text.rtf 文件
+    case CannotSaveText
+    /// 无法保存附件
+    case CannotSaveAttachments
+}
+
+let ErrorDomain = "notesErrorDomain"
+
+func error(code : ErrorCode, _ userInfo:[NSObject:AnyObject]? = nil) -> NSError {
+    
+    return NSError(domain : ErrorDomain ,code : code.rawValue, userInfo:userInfo as? [String : Any])
+    
+}
+
+
+
 class Document: NSDocument {
 
     override init() {
         super.init()
         // Add your subclass-specific initialization here.
+        var text : NSAttributedString = NSAttributedString();
     }
 
     override class var autosavesInPlace: Bool {
